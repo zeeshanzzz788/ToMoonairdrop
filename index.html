@@ -1,138 +1,160 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🚀 ToMoon Airdrop</title>
-    <style>
-        body {
-            margin: 0;
-            font-family: 'Poppins', sans-serif;
-            background: #0d1117;
-            color: #00e5ff;
-            text-align: center;
-        }
-
-        header h1 {
-            font-size: 2em;
-            margin: 20px 0;
-            text-shadow: 0 0 10px #00e5ff, 0 0 20px #00ffff;
-        }
-
-        nav button {
-            background: transparent;
-            color: #00e5ff;
-            border: 1px solid #00e5ff;
-            font-size: 1em;
-            margin: 10px;
-            padding: 10px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            box-shadow: 0 0 15px #00e5ff;
-            transition: all 0.3s ease;
-        }
-        nav button:hover {
-            background: #00e5ff;
-            color: #0d1117;
-            transform: scale(1.1);
-        }
-
-        .container {
-            margin: 30px auto;
-            width: 90%;
-            max-width: 400px;
-            padding: 20px;
-            background: rgba(20, 25, 30, 0.95);
-            border-radius: 12px;
-            box-shadow: 0 0 25px rgba(0, 229, 255, 0.4);
-        }
-
-        input {
-            width: 100%;
-            padding: 12px;
-            margin: 15px 0;
-            border: 1px solid #00e5ff;
-            border-radius: 8px;
-            font-size: 1em;
-            background: #0d1117;
-            color: #00e5ff;
-            box-shadow: inset 0 0 5px rgba(0,229,255,0.3);
-        }
-
-        button {
-            width: 100%;
-            padding: 12px;
-            font-size: 1em;
-            background: transparent;
-            color: #00e5ff;
-            border: 1px solid #00e5ff;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 0 15px #00e5ff;
-        }
-        button:hover {
-            background: #00e5ff;
-            color: #0d1117;
-            transform: scale(1.05);
-        }
-
-        h3, h2, p {
-            margin: 10px 0;
-            color: #00e5ff;
-            text-shadow: 0 0 5px #00e5ff;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ToMoon Airdrop</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <style>
+    body {
+      background: radial-gradient(circle at top, #0f172a, #1e3a8a);
+      font-family: 'Segoe UI', sans-serif;
+      color: #e0e7ff;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      text-align: center;
+      animation: fadeIn 1s ease-in;
+    }
+    @keyframes fadeIn { from {opacity:0;} to {opacity:1;} }
+    .card {
+      background: rgba(15, 23, 42, 0.85);
+      padding: 25px;
+      border-radius: 16px;
+      box-shadow: 0 0 30px rgba(56, 189, 248, 0.6);
+      width: 90%;
+      max-width: 420px;
+      animation: slideUp 0.8s ease-in-out;
+    }
+    @keyframes slideUp { from {transform:translateY(40px);opacity:0;} to {transform:translateY(0);opacity:1;} }
+    h1 { 
+      color: #38bdf8; 
+      text-shadow: 0 0 10px #38bdf8, 0 0 20px #0ea5e9;
+    }
+    p { font-size: 18px; margin: 8px 0; }
+    input {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      outline: none;
+      font-size: 16px;
+      background: rgba(30,58,138,0.3);
+      color: #e0e7ff;
+    }
+    button {
+      background: linear-gradient(45deg, #38bdf8, #0ea5e9);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      margin-top: 15px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      box-shadow: 0 0 10px #38bdf8;
+      transition: all 0.3s ease;
+    }
+    button:hover {
+      background: linear-gradient(45deg, #0ea5e9, #38bdf8);
+      box-shadow: 0 0 20px #38bdf8, 0 0 30px #0ea5e9;
+      transform: scale(1.05);
+    }
+    #walletButton {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: #1e40af;
+      padding: 8px 12px;
+      font-size: 14px;
+    }
+    #referralLink { 
+      word-break: break-all; 
+      margin-top: 15px;
+      color: #38bdf8;
+      text-shadow: 0 0 8px #38bdf8;
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <h1>🚀 ToMoon Airdrop</h1>
-    </header>
-    <nav>
-        <button onclick="showHome()">Home</button>
-        <button onclick="showReferrals()">Referrals</button>
-    </nav>
-
-    <div class="container" id="home">
-        <h3>Your Balance:</h3>
-        <h2 id="balance">0 TMT</h2>
-        <p>Set Your Wallet Address (BNB)</p>
-        <input type="text" id="wallet" placeholder="Enter your BNB address">
-        <button onclick="saveWallet()">Save Wallet</button>
+  <button id="walletButton" onclick="showWallet()">Show Wallet</button>
+  <div class="card">
+    <h1>ToMoon Airdrop</h1>
+    <p id="balance">Balance: 0 TMT</p>
+    <p id="referrals">Referrals: 0</p>
+    <div id="walletSection">
+      <input type="text" id="walletAddress" placeholder="Enter BNB Wallet Address">
+      <button onclick="saveWallet()">Save Wallet</button>
     </div>
-
-    <div class="container" id="referrals" style="display:none;">
-        <h3>Your Referral Link</h3>
-        <input type="text" id="refLink" value="https://t.me/ToMoonairdrop_bot?start=YOUR_ID" readonly>
-        <p>Total Referrals: <span id="refCount">0</span></p>
-        <p>Total Reward: <span id="reward">500</span> TMT</p>
+    <div id="referralSection" style="display:none;">
+      <p>Your referral link:</p>
+      <p id="referralLink"></p>
     </div>
+  </div>
 
-    <script>
-        // Initial Balance
-        let balance = localStorage.getItem("balance");
-        if(!balance) {
-            balance = 500; // Set initial balance
-            localStorage.setItem("balance", balance);
-        }
-        document.getElementById("balance").innerText = balance + " TMT";
+<script>
+  const SUPABASE_URL = "https://fpaesvlmdpcpdlhlqrlo.supabase.co";
+  const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZwYWVzdmxtZHBjcGRsaGxxcmxvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQwOTM1MTUsImV4cCI6MjA2OTY2OTUxNX0.OqxBQwlpaE-DWjlSO7X8GW8wKDHTq2G0cJJnnJPLEWY";
+  const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-        function showHome() {
-            document.getElementById("home").style.display = "block";
-            document.getElementById("referrals").style.display = "none";
-        }
-        function showReferrals() {
-            document.getElementById("home").style.display = "none";
-            document.getElementById("referrals").style.display = "block";
-        }
-        function saveWallet() {
-            const wallet = document.getElementById("wallet").value;
-            if(wallet) {
-                alert("Wallet saved: " + wallet);
-            } else {
-                alert("Please enter your BNB address");
-            }
-        }
-    </script>
+  const telegramId = "user_" + Math.floor(Math.random()*100000); // Replace with real Telegram ID in production
+  let savedWallet = null;
+
+  const params = new URLSearchParams(window.location.search);
+  const refId = params.get("start");
+
+  async function loadUser() {
+    const { data } = await supabase.from('users').select('*').eq('telegram_id', telegramId).single();
+    if (data) {
+      savedWallet = data.wallet_address;
+      updateUI(data);
+    } else {
+      await supabase.from('users').insert([{ telegram_id: telegramId, balance: 500, referrals: 0 }]);
+      updateUI({ balance: 500, referrals: 0, wallet_address: null });
+    }
+    if (refId && refId !== telegramId) { await addReferral(refId); }
+  }
+
+  async function addReferral(referrerId) {
+    const { data } = await supabase.from('users').select('*').eq('telegram_id', referrerId).single();
+    if (data) {
+      const newReferrals = data.referrals + 1;
+      const newBalance = data.balance + 50;
+      await supabase.from('users').update({ referrals: newReferrals, balance: newBalance }).eq('telegram_id', referrerId);
+    }
+  }
+
+  function updateUI(user) {
+    document.getElementById('balance').innerText = `Balance: ${user.balance} TMT`;
+    document.getElementById('referrals').innerText = `Referrals: ${user.referrals}`;
+    if (user.wallet_address) {
+      document.getElementById('walletSection').style.display = 'none';
+      document.getElementById('referralSection').style.display = 'block';
+      document.getElementById('referralLink').innerText = 
+        `https://t.me/ToMoonairdrop_bot?start=${telegramId}`;
+    }
+  }
+
+  async function saveWallet() {
+    const wallet = document.getElementById('walletAddress').value;
+    if (!wallet) return alert('Please enter wallet address');
+    await supabase.from('users').update({ wallet_address: wallet }).eq('telegram_id', telegramId);
+    savedWallet = wallet;
+    document.getElementById('walletSection').style.display = 'none';
+    document.getElementById('referralSection').style.display = 'block';
+    document.getElementById('referralLink').innerText =
+      `https://t.me/ToMoonairdrop_bot?start=${telegramId}`;
+  }
+
+  function showWallet() {
+    if (savedWallet) alert(`Your wallet: ${savedWallet}`);
+    else alert("No wallet set yet");
+  }
+
+  loadUser();
+</script>
 </body>
-            </html>
+</html>
